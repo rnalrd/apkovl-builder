@@ -72,7 +72,7 @@ printf '\nauto lo\niface lo inet loopback\n' >>$OVL_TMPDIR/etc/network/interface
 tar xzf /tmp/alpine-keys-*.apk -C $OVL_TMPDIR 2>/dev/null || die untar
 tar xzf /tmp/alpine-baselayout-*.apk -C $OVL_TMPDIR etc/shadow 2>/dev/null || die untar
 mkdir -p $OVL_TMPDIR/etc/ssh || die
-echo "PermitRootLogin yes\nPasswordAuthentication yes\nUsePrivilegeSeparation sandbox\nSubsystem\tsftp\t/usr/lib/ssh/sftp-server" > $OVL_TMPDIR/etc/ssh/sshd_config
+printf "PermitRootLogin yes\nPasswordAuthentication yes\nUsePrivilegeSeparation sandbox\nSubsystem\tsftp\t/usr/lib/ssh/sftp-server" > $OVL_TMPDIR/etc/ssh/sshd_config
 sudo sed -i 's|^root.*|root:$6$y4KEXSNRaOCug3.5$4O//I2iwTbGOVx9vvoMvN.FW5vbSQ.OdTDiVaLAcugVtSjWlnK8Vo9F8gjN4n45qozBW1uy5QTq3pvqnc3SdH.:16727:0:::::|' $OVL_TMPDIR/etc/shadow || die password
 for runlevel in boot default shutdown sysinit; do
 	mkdir -p $OVL_TMPDIR/etc/runlevels/$runlevel
@@ -92,7 +92,7 @@ done
 
 ln -s /etc/init.d/sshd $OVL_TMPDIR/etc/runlevels/default/sshd
 
-echo 'alpine-base\nopenssh' > $OVL_TMPDIR/etc/apk/world
+printf 'alpine-base\nopenssh' > $OVL_TMPDIR/etc/apk/world
 
 # build tar.gz with root permissions
 cd $OVL_TMPDIR || die

@@ -11,7 +11,7 @@
 PKGS="alpine-conf alpine-keys alpine-baselayout"
 PKG_TMPDIR="/tmp/alpine-conf_temp"
 OVL_TMPDIR="/tmp/apkovl_temp"
-MIRROR="http://nl.alpinelinux.org"
+MIRROR="http://rsync.alpinelinux.org"
 
 cleanup() {
 	rm -rf $PKG_TMPDIR /tmp/alpine-*.apk /tmp/alpine-packages
@@ -25,14 +25,14 @@ die() {
 }
 
 setup_interfaces() {
-	echo -n "IP address for eth0 (e.g. 192.168.1.10)? "
+	printf "IP address for eth0 (e.g. 192.168.1.10)? "
 	read ipaddress
-  echo -n "Subnet mask for eth0 (e.g. 255.255.255.0)? "
-  read subnetmask
-	echo -n "Default gateway for eth0 (e.g. 192.168.1.1)? "
+	printf "Subnet mask for eth0 (e.g. 255.255.255.0)? "
+	read subnetmask
+	printf "Default gateway for eth0 (e.g. 192.168.1.1)? "
 	read gateway
 	mkdir -p $OVL_TMPDIR/etc/network || die
-	echo -n "auto eth0\niface eth0 inet static\n\taddress $ipaddress\n\tnetmask $subnetmask\n\tgateway $gateway\n" > $OVL_TMPDIR/etc/network/interfaces
+	printf "auto eth0\niface eth0 inet static\n\taddress $ipaddress\n\tnetmask $subnetmask\n\tgateway $gateway\n" > $OVL_TMPDIR/etc/network/interfaces
 }
 
 pause() {
@@ -68,7 +68,7 @@ done
 ./sbin/setup-hostname || die
 ./sbin/setup-dns || die
 setup_interfaces || die
-echo '\nauto lo\niface lo inet loopback' >>$OVL_TMPDIR/etc/network/interfaces
+printf '\nauto lo\niface lo inet loopback\n' >>$OVL_TMPDIR/etc/network/interfaces
 tar xzf /tmp/alpine-keys-*.apk -C $OVL_TMPDIR 2>/dev/null || die untar
 tar xzf /tmp/alpine-baselayout-*.apk -C $OVL_TMPDIR etc/shadow 2>/dev/null || die untar
 mkdir -p $OVL_TMPDIR/etc/ssh || die
